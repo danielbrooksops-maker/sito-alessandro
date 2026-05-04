@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Alessandro Gentili - Autore di saggi e articoli culturali pubblicati su Medium">
+    <title>Alessandro Gentili | Autore</title>
+    
+    <!-- 
+    ============================================================================
+    ISTRUZIONI PER IL DEPLOY GRATUITO
+    ============================================================================
+    
+    OPZIONE 1: GitHub Pages (Consigliato)
+    1. Crea un repository su GitHub (es: "alessandrogentili")
+    2. Carica questo file index.html nella root del repository
+    3. Vai su Settings → Pages → Source: Deploy from branch (main/master)
+    4. Il tuo sito sarà visibile su: https://TUO_USERNAME.github.io/alessandrogentili/
+    
+    OPZIONE 2: Netlify Drop
+    1. Vai su https://app.netlify.com/drop
+    2. Trascina la cartella contenente questo file
+    3. Il sito sarà online in pochi secondi con URL personalizzabile
+    
+    OPZIONE 3: Vercel
+    1. Installa Vercel CLI o usa l'interfaccia web
+    2. Collega il repository GitHub o carica i file
+    ============================================================================
+    -->
+    
+    <style>
+        /* 
+        ============================================================================
+        DESIGN SYSTEM & VARIABILI CSS
+        Palette sobria per profilo culturale/letterario
+        ============================================================================
+        */
+        :root {
+            --bg-color: #f9f8f4;           /* Bianco caldo/carta */
+            --card-bg: #ffffff;            /* Bianco puro per le card */
+            --text-primary: #1a1a1a;       /* Nero morbido */
+            --text-secondary: #555555;     /* Grigio medio */
+            --accent-color: #2c5f58;       /* Blu petrolio/verde salvia scuro */
+            --accent-light: #4a8b82;       /* Variante più chiara */
+            --border-color: #e0e0e0;       /* Bordi sottili */
+            --shadow-light: rgba(0, 0, 0, 0.06);
+            --shadow-hover: rgba(0, 0, 0, 0.12);
+            --success-color: #2d7a3e;      /* Verde per feedback positivi */
+            --error-color: #c41e3a;        /* Rosso per errori */
+            --badge-saggio: #2c5f58;       /* Badge Saggi */
+            --badge-articolo: #8b6b4a;     /* Badge Articoli (tono terra) */
+            
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 2rem;
+            --spacing-lg: 3rem;
+            --spacing-xl: 4rem;
+            
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            
+            --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--accent-color);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Tipografia */
+        h1, h2, h3 {
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+
+        h1 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: var(--spacing-sm); }
+        h2 { font-size: clamp(1.5rem, 4vw, 2.25rem); margin-bottom: var(--spacing-md); }
+        h3 { font-size: 1.25rem; margin-bottom: var(--spacing-xs); }
+
+        p { margin-bottom: var(--spacing-sm); color: var(--text-secondary); }
+
+        /* Layout Container */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-sm);
+        }
+
+        /* Header */
+        header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: var(--spacing-lg) 0;
+            text-align: center;
+        }
+
+        .author-info {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .author-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+            margin: 0 auto var(--spacing-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+            box-shadow: 0 4px 12px var(--shadow-light);
+        }
+
+        .social-links {
+            margin-top: var(--spacing-md);
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-sm);
+        }
+
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--bg-color);
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .social-btn:hover {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: var(--spacing-xl) 0;
+        }
+
+        section {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        /* Filtri */
+        .filter-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            background: var(--card-bg);
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        /* Griglia Contenuti */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .content-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--shadow-hover);
+            border-color: var(--accent-light);
+        }
+
+        .card-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+            align-self: flex-start;
+        }
+
+        .badge-saggio {
+            background: rgba(44, 95, 88, 0.1);
+            color: var(--badge-saggio);
+        }
+
+        .badge-articolo {
+            background: rgba(139, 107, 74, 0.1);
+            color: var(--badge-articolo);
+        }
+
+        .card-date {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: var(--spacing-md);
+            flex: 1;
+            line-height: 1.4;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: var(--accent-color);
+            color: white;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: background 0.2s ease;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .card-link:hover {
+            background: var(--accent-light);
+            color: white;
+        }
+
+        /* Newsletter Section */
+        .newsletter-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .form-group {
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(44, 95, 88, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-top: var(--spacing-xs);
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 0.25rem;
+            accent-color: var(--accent-color);
+            width: 18px;
+            height: 18px;
+        }
+
+        .checkbox-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .submit-btn {
+            padding: 1rem 2rem;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+            margin-top: var(--spacing-sm);
+        }
+
+        .submit-btn:hover {
+            background: var(--accent-light);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .submit-btn:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Feedback Messages */
+        .form-feedback {
+            margin-top: var(--spacing-sm);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .form-feedback.success {
+            display: block;
+            background: rgba(45, 122, 62, 0.1);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .form-feedback.error {
+            display: block;
+            background: rgba(196, 30, 58, 0.1);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            padding: var(--spacing-md) 0;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 640px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-controls {
+                flex-direction: column;
+            }
+            
+            .filter-btn {
+                width: 100%;
+            }
+            
+            .newsletter-section {
+                padding: var(--spacing-md);
+            }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header role="banner">
+        <div class="container author-info">
+            <div class="author-avatar" aria-hidden="true">AG</div>
+            <h1>Alessandro Gentili</h1>
+            <p>Autore di saggi e approfondimenti culturali. Esploro temi complessi con chiarezza e rigore, pubblicando regolarmente su Medium.</p>
+            
+            <nav class="social-links" aria-label="Link social">
+                <a href="https://medium.com/@alessandrgentili" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Profilo Medium di Alessandro Gentili">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M7 0h10v1.504c-.666-.102-1.333-.153-2-.153-3.866 0-7 3.134-7 7s3.134 7 7 7c.667 0 1.334-.051 2-.153V17H7V0zm10 13.5c-2.485 0-4.5-2.015-4.5-4.5S14.515 4.5 17 4.5s4.5 2.015 4.5 4.5-2.015 4.5-4.5 4.5z"/>
+                    </svg>
+                    Medium
+                </a>
+                <a href="mailto:contact@example.com" class="social-btn" aria-label="Invia email ad Alessandro Gentili">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    Contatti
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main role="main">
+        <div class="container">
+            <!-- Sezione Contenuti -->
+            <section id="pubblicazioni" aria-labelledby="pubblicazioni-title">
+                <h2 id="pubblicazioni-title">Pubblicazioni</h2>
+                
+                <!-- Controlli Filtro -->
+                <div class="filter-controls" role="group" aria-label="Filtra contenuti per tipo">
+                    <button class="filter-btn active" data-filter="all" aria-pressed="true">
+                        Tutti i contenuti
+                    </button>
+                    <button class="filter-btn" data-filter="saggio" aria-pressed="false">
+                        Solo Saggi (9)
+                    </button>
+                    <button class="filter-btn" data-filter="articolo" aria-pressed="false">
+                        Solo Articoli (4)
+                    </button>
+                </div>
+
+                <!-- Griglia Card -->
+                <div id="content-grid" class="content-grid" role="list" aria-live="polite">
+                    <!-- Le card verranno inserite qui via JavaScript -->
+                </div>
+            </section>
+
+            <!-- Sezione Newsletter -->
+            <section id="newsletter" aria-labelledby="newsletter-title" class="newsletter-section">
+                <h2 id="newsletter-title">Resta Aggiornato</h2>
+                <p>Iscriviti per ricevere aggiornamenti sui nuovi saggi, articoli ed eventi.</p>
+                
+                <!-- 
+                ============================================================================
+                CONFIGURAZIONE FORMSPREE
+                ============================================================================
+                1. Vai su https://formspree.io/ e crea un account gratuito
+                2. Crea un nuovo form ("Create New Form")
+                3. Copia l'URL del form (sarà simile a: https://formspree.io/f/xnqayzbk)
+                4. Sostituisci "TUO_ID_FORMSPREE" qui sotto con il tuo ID reale
+                
+                AUTOMATIZZAZIONE NOTIFICHE (Opzionale):
+                Per inviare email automatiche quando pubblichi nuovi contenuti:
+                1. Su Formspree: Settings → Email Notifications → abilita
+                2. Oppure usa Zapier/Make:
+                   - Trigger: Nuovo submit su Formspree
+                   - Action: Invia email tramite Gmail/SendGrid
+                   - Oppure: Aggiungi a Mailchimp/ConvertKit
+                ============================================================================
+                -->
+                <form id="newsletter-form" class="newsletter-form" action="https://formspree.io/f/TUO_ID_FORMSPREE" method="POST">
+                    <div class="form-group">
+                        <label for="email" class="form-label">La tua email *</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-input" 
+                            placeholder="nome@esempio.com"
+                            required
+                            autocomplete="email"
+                        >
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input 
+                            type="checkbox" 
+                            id="notifications" 
+                            name="notifications"
+                            value="yes"
+                        >
+                        <label for="notifications" class="checkbox-label">
+                            Voglio ricevere notifiche per nuovi saggi ed eventi (opzionale)
+                        </label>
+                    </div>
+                    
+                    <!-- Campo nascosto per honeypot anti-spam -->
+                    <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+                    
+                    <button type="submit" class="submit-btn" id="submit-btn">
+                        Iscriviti alla newsletter
+                    </button>
+                    
+                    <div id="form-feedback" class="form-feedback" role="alert" aria-live="assertive"></div>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <footer role="contentinfo">
+        <div class="container">
+            <p>&copy; <span id="current-year">2024</span> Alessandro Gentili. Tutti i diritti riservati.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+                <a href="https://medium.com/@alessandrgentili" target="_blank" rel="noopener noreferrer">Leggi su Medium</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        /**
+         * ===========================================================================
+         * DATI CONTENUTI - DA AGGIORNARE CON I TITOLI REALI
+         * ===========================================================================
+         * Istruzioni:
+         * 1. Sostituisci "Titolo provvisorio X" con i titoli reali dei tuoi saggi/articoli
+         * 2. Inserisci le date corrette nel formato AAAA-MM-GG
+         * 3. Sostituisci "#" con gli URL completi degli articoli su Medium
+         *    (es: "https://medium.com/@alessandrgentili/titolo-articolo-abc123")
+         * 
+         * NOTA TECNICA SUL FEED RSS:
+         * Medium fornisce un feed RSS su: https://medium.com/feed/@alessandrgentili
+         * Tuttavia, il feed RSS non distingue tra "Saggi" e "Articoli".
+         * Per mantenere una categorizzazione precisa, usiamo questa lista manuale.
+         * Se desideri fetchare automaticamente dal RSS in futuro, puoi usare:
+         * 
+         * Esempio (commentato):
+         * fetch('https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@alessandrgentili')
+         *   .then(response => response.json())
+         *   .then(data => {
+         *     // Processa i dati e mappali alla struttura delle card
+         *   });
+         * 
+         * Per ora, la lista manuale garantisce stabilità e controllo totale.
+         * ===========================================================================
+         */
+        const publications = [
+            // === SAGGI (9 totali) ===
+            { titolo: "Titolo provvisorio Saggio 1", tipo: "saggio", data: "2024-01-15", url: "#" },
+            { titolo: "Titolo provvisorio Saggio 2", tipo: "saggio", data: "2024-02-20", url: "#" },
+            { titolo: "Titolo provvisorio Saggio 3", tipo: "saggio", data: "2024-03-10", url: "#" },
+            { titolo: "Titolo provvisorio Saggio 4", tipo: "saggio", data: "2024-04-05", url: "#" },
+            { titolo: "Titolo provvisorio Saggio 5", tipo: "saggio", data: "2024-05-18", url: "#" },
+            { titolo: "Titolo provvisorio Saggio 6", tipo: "saggio", data: "2024-06-22", url: "#" },
+            { titolo: "Titolo provvisorio Saggio 7", tipo: "saggio", data: "2024-07-30", url: "#" },
+            { titolo: "Titolo provvisorio Saggio 8", tipo: "saggio", data: "2024-08-14", url: "#" },
+            { titolo: "Titolo provvisorio Saggio 9", tipo: "saggio", data: "2024-09-25", url: "#" },
+            
+            // === ARTICOLI (4 totali) ===
+            { titolo: "Titolo provvisorio Articolo 1", tipo: "articolo", data: "2024-01-28", url: "#" },
+            { titolo: "Titolo provvisorio Articolo 2", tipo: "articolo", data: "2024-03-15", url: "#" },
+            { titolo: "Titolo provvisorio Articolo 3", tipo: "articolo", data: "2024-05-08", url: "#" },
+            { titolo: "Titolo provvisorio Articolo 4", tipo: "articolo", data: "2024-07-12", url: "#" }
+        ];
+
+        /**
+         * ===========================================================================
+         * FUNZIONI UTILI
+         * ===========================================================================
+         */
+        
+        // Formatta la data da AAAA-MM-GG a "GG Month AAAA" (es: "15 gennaio 2024")
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const date = new Date(dateString + 'T00:00:00'); // Aggiungi tempo per evitare problemi timezone
+            return date.toLocaleDateString('it-IT', options);
+        }
+
+        // Crea l'HTML per una singola card
+        function createCard(publication) {
+            const badgeClass = publication.tipo === 'saggio' ? 'badge-saggio' : 'badge-articolo';
+            const badgeText = publication.tipo === 'saggio' ? 'Saggio' : 'Articolo';
+            
+            return `
+                <article class="content-card" role="listitem" data-tipo="${publication.tipo}">
+                    <span class="card-badge ${badgeClass}">${badgeText}</span>
+                    <time class="card-date" datetime="${publication.data}">${formatDate(publication.data)}</time>
+                    <h3 class="card-title">${publication.titolo}</h3>
+                    <a href="${publication.url}" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Leggi ${publication.titolo} su Medium">
+                        Leggi su Medium
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                    </a>
+                </article>
+            `;
+        }
+
+        /**
+         * ===========================================================================
+         * RENDERIZZAZIONE CONTENUTI
+         * ===========================================================================
+         */
+        const contentGrid = document.getElementById('content-grid');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+
+        // Funzione per renderizzare le card in base al filtro
+        function renderCards(filter = 'all') {
+            contentGrid.innerHTML = '';
+            
+            const filteredPublications = filter === 'all' 
+                ? publications 
+                : publications.filter(pub => pub.tipo === filter);
+            
+            if (filteredPublications.length === 0) {
+                contentGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 2rem;">Nessun contenuto trovato.</p>';
+                return;
+            }
+            
+            filteredPublications.forEach(publication => {
+                contentGrid.insertAdjacentHTML('beforeend', createCard(publication));
+            });
+        }
+
+        // Inizializza con tutti i contenuti
+        renderCards('all');
+
+        /**
+         * ===========================================================================
+         * GESTIONE FILTRI
+         * ===========================================================================
+         */
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Rimuovi classe active da tutti i bottoni
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-pressed', 'false');
+                });
+                
+                // Aggiungi classe active al bottone cliccato
+                button.classList.add('active');
+                button.setAttribute('aria-pressed', 'true');
+                
+                // Applica filtro
+                const filterValue = button.getAttribute('data-filter');
+                renderCards(filterValue);
+            });
+        });
+
+        /**
+         * ===========================================================================
+         * GESTIONE FORM NEWSLETTER
+         * ===========================================================================
+         */
+        const newsletterForm = document.getElementById('newsletter-form');
+        const emailInput = document.getElementById('email');
+        const submitBtn = document.getElementById('submit-btn');
+        const formFeedback = document.getElementById('form-feedback');
+
+        newsletterForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Validazione email lato client
+            const email = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!emailRegex.test(email)) {
+                showFeedback('Per favore, inserisci un indirizzo email valido.', 'error');
+                return;
+            }
+            
+            // Disabilita bottone durante l'invio
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Invio in corso...';
+            formFeedback.className = 'form-feedback';
+            
+            try {
+                // Invio dati a Formspree
+                const formData = new FormData(newsletterForm);
+                const response = await fetch(newsletterForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    showFeedback('Grazie per esserti iscritto! Riceverai presto i nostri aggiornamenti.', 'success');
+                    newsletterForm.reset();
+                } else {
+                    const result = await response.json();
+                    throw new Error(result.errors ? Object.values(result.errors).join(', ') : 'Errore nell\'invio');
+                }
+            } catch (error) {
+                console.error('Errore invio form:', error);
+                showFeedback('Si è verificato un errore. Per favore riprova più tardi.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Iscriviti alla newsletter';
+            }
+        });
+
+        // Mostra feedback visivo
+        function showFeedback(message, type) {
+            formFeedback.textContent = message;
+            formFeedback.className = `form-feedback ${type}`;
+            
+            // Scroll smooth verso il feedback su mobile
+            if (window.innerWidth < 640) {
+                formFeedback.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        /**
+         * ===========================================================================
+         * ALTRE FUNZIONALITÀ
+         * ===========================================================================
+         */
+        // Imposta anno corrente nel footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Validazione email in tempo reale (opzionale, migliora UX)
+        emailInput.addEventListener('blur', () => {
+            const email = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (email && !emailRegex.test(email)) {
+                emailInput.style.borderColor = 'var(--error-color)';
+            } else {
+                emailInput.style.borderColor = 'var(--border-color)';
+            }
+        });
+
+        emailInput.addEventListener('input', () => {
+            emailInput.style.borderColor = 'var(--border-color)';
+        });
+
+        /**
+         * ===========================================================================
+         * ISTRUZIONI PER AGGIUNGERE NUOVI CONTENUTI IN FUTURO
+         * ===========================================================================
+         * 
+         * 1. Apri questo file index.html in un editor di testo
+         * 2. Trova l'array "publications" all'inizio dello script (circa riga 380)
+         * 3. Aggiungi un nuovo oggetto seguendo questo formato:
+         *    { titolo: "Titolo del nuovo contenuto", tipo: "saggio" o "articolo", data: "AAAA-MM-GG", url: "https://..." }
+         * 4. Assicurati di rispettare virgole e parentesi
+         * 5. Salva il file e caricalo sul tuo hosting (GitHub Pages/Netlify)
+         * 
+         * Esempio:
+         * { titolo: "Il futuro dell'IA", tipo: "saggio", data: "2024-12-01", url: "https://medium.com/@alessandrgentili/..." }
+         * 
+         * Nota: I conteggi nei pulsanti filtro (9 saggi, 4 articoli) vanno aggiornati manualmente
+         * se aggiungi nuovi contenuti. Cerca nel codice HTML: "Solo Saggi (9)" e "Solo Articoli (4)"
+         * ===========================================================================
+         */
+    </script>
+</body>
+</html>
